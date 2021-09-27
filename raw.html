@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>Procedural Island</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100%; image-rendering: crisp-edges;}
+		</style>
+	</head>
+	<body>
+        <span id="regen" style="position: absolute;padding: 10px;background:white;border-radius: 3px;margin: 5px;">Regenerate</span>
+        <script type="module" src="./three.module.js"></script>
+        <script type="module" src="./ImprovedNoise.js"></script>
+		<script type="module">
+            import * as THREE from './three.module.js';
+            import { ImprovedNoise } from './ImprovedNoise.js';
+
+            var worldWidth = 64, worldDepth = 64;
+            var data = generateHeight( worldWidth, worldDepth );
+
+			var renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio( window.devicePixelRatio/5);
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.setClearColor()
+            document.body.appendChild( renderer.domElement );
+
+            var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
+            camera.position.set( 0, 2000, 4000 );
+            camera.rotateX(-Math.PI *0.15);
+
+            var clock = new THREE.Clock();
+            
+
+            var scene = new THREE.Scene();
+            // var light = new THREE.DirectionalLight(0xffffff, 0.1);
+            // light.color.setHSL( 0.1, 1, 0.1 );
+            // light.position.set( - 1, 1.75, 1 );
+            // light.position.multiplyScalar( 0.1 );
+            // scene.add(light);
+            scene.background = new THREE.Color().setHSL(200/360,1,0.5);
+
+            //create a blue LineBasicMaterial
+            var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+
+            var geometry = new THREE.PlaneBufferGeometry( 4000, 4000, worldWidth -1, worldDepth - 1);
+
+            
+            var mesh = new THREE.Mesh( geometry, material);
+            geometry.rotateX( - Math.PI / 2 );
+            // geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, 0 ) );
+            // mesh.position.set(-4000, 0, 0);
+
+            function draw(){
+                var vertices = geometry.attributes.position.array;
+                var colors = [];
+
+                for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+                    vertices[ j + 1 ] = data[ i ]*10;
+                    var c = new THREE.Color();
+                    var height = vertices[ j + 1 ]/1000;
+                    var hue = 0;
+                    var sat = 1;
+                    var light = 0.5;
+                    //water
+                    if(height < 0.01){
+                        hue = 200/360;
+
+                    //sand
+                    }else if ( height < 0.03){
+                        hue = 53/360;
+                        light = 0.5 * (1-height*10);
+
+                    //forest
+                    } else if( height < 0.3){
+                        hue = 116/360;
+                        light = 0.1 + (height*0.8);
+
+                    //cliffs
+                    } 
+                    else if( height < 0.4){
+                        hue = 116/360;
+                        sat = 0.5-(height*2-0.4);
+                        light = 0.6* (height*2);
+
+                    //snow
+                    } else {
+                        sat = 0;
+                        light = 1* (height*2);  
+                    }
+                    c.setHSL(hue,sat,light)
+                    colors.push( c.r, c.g, c.b );
+                }
+
+                geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+                geometry.computeVertexNormals();
+
+            }    
+            draw();
+            // controls
+            // var controls = new OrbitControls( camera, renderer.domElement );
+            // // controls.minPolarAngle = Math.PI/0.5;
+            // controls.maxPolarAngle = Math.PI * 0.5;
+            // controls.minDistance = 3000;
+            // controls.maxDistance = 5000;
+
+            scene.add( mesh );
+            
+
+            function animate() {
+                requestAnimationFrame( animate );
+                geometry.rotateY( - Math.PI / 2 * clock.getDelta() /10);
+                renderer.render( scene, camera );
+            }
+
+            animate();
+
+            function regen(){
+                data = generateHeight( worldWidth, worldDepth );
+                draw();
+
+            }
+            document.getElementById("regen").addEventListener('click', regen);
+
+            function generateHeight( width, height ) {
+				var size = width * height, data = new Uint8Array( size ),
+					perlin = new ImprovedNoise(), quality = 0.2, z = Math.random() *1000;
+				for ( var j = 0; j < 4; j ++ ) {
+					for ( var i = 0; i < size; i ++ ) {
+						var x = i % width, y = ~ ~ ( i / width );
+						data[ i ] += Math.abs( perlin.noise( x / quality, y / quality, z ) * quality * 1.75 );
+                        // data[i] = 100;
+                        if(j == 3){
+                            // console.log(Math.sqrt(Math.pow(Math.abs(x -32),2) + Math.pow(Math.abs(y -32),2)));
+                            var distance  = Math.sqrt(Math.pow(Math.abs(x -width*.5),2) + Math.pow(Math.abs(y -width*.5),2))/width;
+                            var power = 10;
+                            // height = ((Math.cos(Math.PI * distance +1))/2)*power; 
+                            // console.log(distance);
+                            var height = 1/(distance*5 + 1);
+                            var height = height * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * distance), power);
+                            // console.log(height);
+                            data[i]  = (data[i] * height)*2;
+                        }
+					}
+					quality *= 5;
+                    
+				}
+				return data;
+			}
+
+		</script>
+	</body>
+</html>
