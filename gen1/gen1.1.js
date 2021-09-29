@@ -118,6 +118,7 @@ var count = {
 }
 
 function createIsland(name) {
+
     let dir = './'+name+'/';
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
@@ -180,7 +181,7 @@ function createIsland(name) {
         }
     })
     highestPoint = highest
-    canvas.height = highest * worldWidth + 64
+    //canvas.height = highest * worldWidth + 64 //# IMPORTANT
 
     if (features.lighthouse) {
         var pos = getOffshoreLocation(3)
@@ -195,6 +196,7 @@ function createIsland(name) {
 
     // draw topography
     for (var i = highest; i >= 0; i--) {
+        ctx.clearRect(0,0,worldDepth, worldWidth)
         data.forEach((dataItem, j) => {
             if (dataItem > i) {
                 //add here
@@ -213,6 +215,9 @@ function createIsland(name) {
                 }
             }
         })
+
+        const buffer = canvas.toBuffer('image/png')
+        fs.writeFileSync(dir + String(i).padStart(4, '0') + '.png', buffer)
     }
 
     if (features.carrier) {
@@ -267,15 +272,9 @@ function createIsland(name) {
         if(features.boatpier){
             drawBoatPier(pos, highest)
             exportData.objects.push({
-                object: "pier",
+                object: "boatpier",
                 x: pos.x,
                 y: pos.y,
-                z: pos.z
-            })
-            exportData.objects.push({
-                object: "boat",
-                x: pos.x + 5,
-                y: pos.y + 2,
                 z: pos.z
             })
             count.boatpier++
@@ -291,14 +290,6 @@ function createIsland(name) {
         }
     }
 
-    for(var i = 0; i <= highestPoint; i++){
-        var destCanvas = createCanvas(worldWidth, worldDepth)
-        var destCtx = destCanvas.getContext('2d')
-        destCtx.drawImage(canvas, 0,(highestPoint-i) * 64,64,64,0,0,64,64);
-        const buffer = destCanvas.toBuffer('image/png')
-        fs.writeFileSync(dir + String(i).padStart(4, '0') + '.png', buffer)
-    }
-
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./' + name + '.png', buffer)
     exportData.name = name
@@ -312,7 +303,7 @@ function createIsland(name) {
     return exportData
 }
 
-var numIslands = 50
+var numIslands = 4
 var islands = []
 var blah = []
 
@@ -422,9 +413,9 @@ function drawKraken(x, y, highest) {
     yOffset -= 64
     ctx.fillRect(x-2, y + yOffset - 2, 4, 4)
     ctx.fillRect(x-2+5, y + yOffset - 2, 1, 1)
-    ctx.fillStyle = "#ffffff"
+    ctx.fillStyle = "#fff"
     ctx.fillRect(x-2+3, y + yOffset - 2+1, 1, 1)
-    ctx.fillStyle = "#010101"
+    ctx.fillStyle = "#000"
     ctx.fillRect(x-2+3, y + yOffset - 2+1+1, 1, 1)
     
     ctx.fillStyle = "#33ff33"
@@ -445,7 +436,7 @@ function drawCarrier(x, y, highest) {
 
     //hull
     yOffset -= 64
-    ctx.fillStyle = "#a10021"
+    ctx.fillStyle = "#A20021"
     ctx.fillRect(x - 1, y + yOffset - 3, 3, 7)
 
     //deck
@@ -540,7 +531,7 @@ function drawSquare(x, y, height, exportData, features, rocks=false) {
         i: palIndex
     })
     ctx.fillStyle = exportData.pal[palIndex]
-    ctx.fillRect(x, y, 1, 1)
+    ctx.fillRect(x, y%worldWidth, 1, 1)  //changed this
 }
 
 function getDistance(x1,y1,x2,y2){

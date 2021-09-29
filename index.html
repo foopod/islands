@@ -70,10 +70,10 @@
                 border:none;
                 margin: auto;
                 margin:1em auto;
-                width: 4em;
+                width: 6em;
                 text-align: center;
             }
-            input{
+            input, textarea{
                 font-size: 90%;
                 border-radius: 10px;
                 /* border:black 4px solid; */
@@ -123,6 +123,9 @@
             .blue{
                 color:#007780;
             }
+            .white-link{
+                color:#fff;
+            }
             @media only screen and (min-width:600px) {
                 #nav{
                     font-size: 90%;
@@ -138,6 +141,7 @@
             <a href="https://opensea.io/collection/islands-g0" target="blank" class="nav">View Collection</a>
             <a href="#join" class="nav">Join Waitlist</a>
             <a href="#faq" class="nav">FAQ</a>
+            <a href="#contact" class="nav">Contact</a>
         </div>
         <div class="container">
             <h1>Islands</h1>
@@ -146,7 +150,7 @@
             <div id="generations">
                 <div class="grid-container">
                     <h3>Gen 0</h3>
-                    <p class="subline red"><a href="https://opensea.io/collection/islands-g0" class="red">SOLD OUT</a></p>
+                    <p class="subline">12 Minted - <a href="https://opensea.io/collection/islands-g0" class="blue">View</a></p>
                     <div class="island-grid">
                         <img src="images/island01.gif"/>
                         <img src="images/island02.gif"/>
@@ -156,7 +160,7 @@
                 </div>
                 <div class="grid-container">
                     <h3>Gen 1</h3>
-                    <p class="subline">29th Sept - <a href="#join" class="red">Closed</a></p>
+                    <p class="subline">29th Sept - <a href="#join" class="red">Coming Soon</a></p>
                     <div class="island-grid">
                         <img src="images/eg1.gif"/>
                         <img src="images/eg2.gif"/>
@@ -168,9 +172,7 @@
             
 
             <br>
-            <h2 id="view">Generation 0 has sold out</h2>
-            <a target="blank" class="button" href="https://opensea.io/collection/islands-g0">View</a>
-            <p style="text-align: center;">Next Generation out 29th September</p>
+            
         </div>
         <div class="wide" id="join">
             <br>
@@ -221,7 +223,22 @@
             <p>Yes, you could just sign up with a different email address, but this really just puts more stress on me the creator to create excess.</p>
             <p>If there is demand for it, then I can create some scheduled drops in larger batches.</p>
 
-            <img src="oprah.jpg" style="margin:auto; display:block;max-width: 400px;width: 100%;"/>
+        </div>
+
+        <div class="wide" id="contact">
+            <br>
+            <h2>Contact</h2>
+            
+            <form netlify name="contact">
+                <p>Find us on Twitter <a href="https://twitter.com/Islands_NFT" class="white-link">@Islands_NFT</a> or leave us a message below.</p>
+                <input type=email name="Email" placeholder="Email (Optional)">
+                <textarea type=text name="Message" placeholder="Your message" rows="8"></textarea>
+                <p style="display: none;">
+                    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                  </p>
+                <input type=submit class="button white" value="Send" style="font-family: 'Comfortaa', cursive;">
+            </form>
+            <br>
         </div>
     </body>
 </html>
