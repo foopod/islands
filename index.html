@@ -99,9 +99,6 @@
                 background-color:white;
                 color:#000;
             }
-            h4{
-                text-decoration: underline;
-            }
             
             .grid-container{
                 border:1px solid grey;
@@ -112,6 +109,7 @@
             #generations{
                 display: flex;
                 flex-wrap: wrap;
+                justify-content: center;
             }
             .subline{
                 font-size: 80%;
@@ -138,7 +136,6 @@
     </head>
     <body>
         <div id="nav">
-            <a href="https://opensea.io/collection/islands-g0" target="blank" class="nav">View Collection</a>
             <a href="#join" class="nav">Join Waitlist</a>
             <a href="#faq" class="nav">FAQ</a>
             <a href="#contact" class="nav">Contact</a>
@@ -146,37 +143,44 @@
         <div class="container">
             <h1>Islands</h1>
             <p style="text-align: center;margin-top:0px;">An NFT for everyone.</p>
-            <br>
-            <div id="generations">
-                <div class="grid-container">
-                    <h3>Gen 0</h3>
-                    <p class="subline">12 Minted - <a href="https://opensea.io/collection/islands-g0" class="blue">View</a></p>
-                    <div class="island-grid">
-                        <img src="images/island01.gif"/>
-                        <img src="images/island02.gif"/>
-                        <img src="images/island03.gif"/>
-                        <img src="images/island04.gif"/>
-                    </div>
-                </div>
-                <div class="grid-container">
-                    <h3>Gen 1</h3>
-                    <p class="subline">29th Sept - <a href="#join" class="red">Coming Soon</a></p>
-                    <div class="island-grid">
-                        <img src="images/eg1.gif"/>
-                        <img src="images/eg2.gif"/>
-                        <img src="images/eg3.gif"/>
-                        <img src="images/eg4.gif"/>
-                    </div>
+        </div>
+        <div id="generations" style="max-width:42em; margin:auto">
+            <div class="grid-container">
+                <h3>Gen 0</h3>
+                <p class="subline">12 Minted - <a href="https://opensea.io/collection/islands-g0" class="blue">View</a></p>
+                <div class="island-grid">
+                    <img src="images/island01.gif"/>
+                    <img src="images/island02.gif"/>
+                    <img src="images/island03.gif"/>
+                    <img src="images/island04.gif"/>
                 </div>
             </div>
-            
-
-            <br>
-            
+            <div class="grid-container">
+                <h3>Gen 1</h3>
+                <p class="subline">50 Minted - <a href="https://opensea.io/collection/islands-g1" class="blue">View</a></p>
+                <div class="island-grid">
+                    <img src="images/eg1.gif"/>
+                    <img src="images/eg2.gif"/>
+                    <img src="images/eg3.gif"/>
+                    <img src="images/eg4.gif"/>
+                </div>
+            </div>
+            <div class="grid-container">
+                <h3>Gen 2</h3>
+                <p class="subline">November</p>
+                <div class="island-grid">
+                    <img src="images/qwhite.gif"/>
+                    <img src="images/qwhite.gif"/>
+                    <img src="images/qwhite.gif"/>
+                    <img src="images/qwhite.gif"/>
+                </div>
+            </div>
         </div>
+        <br>
+            <br>
         <div class="wide" id="join">
             <br>
-            <h2>Want to be part of Gen 2?</h2>
+            <h2>Register for Gen 2?</h2>
             <form netlify name="waitlist-gen2">
                 <input type=email name="Email" placeholder="Email">
                 <input style="font-size: 75%;" type=text name="Eth Address" placeholder="ETH Address">
@@ -190,14 +194,14 @@
         </div>
         <div class="container">
             <h2 id="roadmap">Roadmap</h2>
-            <h4>16<sup>th</sup> September - Gen 0 Release</h4>
-            <p>Generation 0 Islands released - ALL CLAIMED.</p>
+            <ul>
+            <li>16<sup>th</sup> September - Gen 0 Released - <a href="https://opensea.io/collection/islands-g0" class="blue">View</a></li>
 
-            <h4>29<sup>th</sup> September - Gen 1 Release</h4>
-            <p>Generation 1 will go live and those on the waitlist will get an invite to claim their Island. There will be extras up for grabs as well, but if you want to gurantee yours then get on the waitlist.</p>
-            
-            <h4>2 Monthly Releases</h4>
-            <p>Every 2 months a new generation of Islands will be released.</p>
+            <li>29<sup>th</sup> September - Gen 1 Released - <a href="https://opensea.io/collection/islands-g1" class="blue">View</a></li>
+            <li>November - Exclusive Island Functionality</li>
+            <li>November - Gen 2 Release</li>
+
+        </ul>
 
             <h2 id="faq">FAQ</h2>
             <h3>Why?</h3>
