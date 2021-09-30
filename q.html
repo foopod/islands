@@ -1,0 +1,180 @@
+<html>
+    <head>
+        <title>Islands</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet"> 
+        <style>
+            html{
+                background-color: #fff;
+                font-family: 'Comfortaa', cursive;
+                font-size: 120%;
+                line-height: 1.5em;
+            }
+            body{
+                margin:0;
+            }
+            h1, h2{
+                text-align: center;
+                margin-bottom: 0px;
+            }
+            h3{
+                font-weight: bold;
+            }
+            .container{
+                max-width: 32em;
+                display: block;
+                margin: auto;
+                padding:2em 1em;
+            }
+            .island-grid{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                /* border-radius: 20px; */
+                /* border:black 4px solid; */
+            }
+            .island-grid img{
+                image-rendering: crisp-edges;
+                margin:0.2em;
+                display:block;
+                flex-grow: 1;
+                width: 100px;
+                border-radius: 10px;
+            }
+            #nav{
+                position: absolute;
+                right: 0px;
+                top: 6px;
+                font-size: 60%;
+            }
+            #nav a{
+                padding:1em;
+            }
+            a{
+                color: #007780;
+                text-decoration: none;
+            }
+            a:hover{
+                text-decoration: underline;
+            }
+            .button{
+                background-color: #009cb8;
+                color:white;
+                display: block;
+                font-weight: 700;
+                font-size: 120%;
+                border-radius: 10px;
+                padding:  0.5em 1em;
+                /* border:none; */
+                margin: auto;
+                margin:1em auto;
+                width: 6em;
+                text-align: center;
+                border:black 1px solid;
+            }
+            input, textarea{
+                font-size: 90%;
+                border-radius: 10px;
+                border:black 1px solid;
+                padding:  0.5em 1em;
+                /* border:none; */
+                display: block;
+                margin:1em 0;
+                width: 100%;
+            }
+            form{
+                text-align: center;
+                margin: auto;
+                display: block;
+                padding:1em;
+            }
+            .wide{
+                background-color: #009cb8;
+                color:white;
+                padding:2em 0;
+            }
+            .white{
+                background-color:white;
+                color:#000;
+            }
+            
+            .grid-container{
+                border:1px solid grey;
+                border-radius: 10px;
+                margin:0.5em;
+                padding:0.5em;
+            }
+            #generations{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .subline{
+                font-size: 80%;
+                margin-top:-2em;
+            }
+            .red{
+                color:red;
+            }
+            .blue{
+                color:#007780;
+            }
+            .white-link{
+                color:#fff;
+            }
+            @media only screen and (min-width:600px) {
+                #nav{
+                    font-size: 90%;
+                }
+                #generations{
+                    flex-wrap: nowrap;
+                }
+            }
+
+            input[range]{
+                margin-bottom: 4em;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="nav">
+            <a href="/" class="nav">Home</a>
+        </div>
+        <div class="container" id="questionnaire">
+            <br>
+            <h2>Island Survey</h2>
+            
+            <form netlify name="q">
+                <p style="margin-bottom: 4em;">How important are the following?</p>
+                <label for="island-data">Access to Island data, e.g. voxel file, heightmap etc.</label>
+                <input type="range" id="island-data" name="Island Data" min="0" max="50">
+                <div style="display: flex;justify-content: space-between;margin-top:-1em;margin-bottom: 4em;font-size: 80%;">
+                    <span>Not Important</span><span>Very Important</span>
+                </div>
+
+                <label for="explore-island">Explore a high fidelity copy of your Island</label>
+                <input type="range" id="explore-island" name="Explore Island" min="0" max="50">
+                <div style="display: flex;justify-content: space-between;margin-top:-1em;margin-bottom: 4em;font-size: 80%;">
+                    <span>Not Important</span><span>Very Important</span>
+                </div>
+
+                <label for="share-island">Share my Island in fun and creative ways</label>
+                <input type="range" id="share-island" name="Share Island" min="0" max="50">
+                <div style="display: flex;justify-content: space-between;margin-top:-1em;margin-bottom: 4em;font-size: 80%;">
+                    <span>Not Important</span><span>Very Important</span>
+                </div>
+
+                <label for="more">More thoughts? Other ideas?</label>
+                <textarea id="more" name="More Thoughts" type=text name="Message" placeholder="Your message" rows="8"></textarea>
+                <p style="display: none;">
+                    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                </p>
+                <input type=submit class="button white" value="Submit" style="font-family: 'Comfortaa', cursive;">
+            </form>
+            <br>
+        </div>
+    </body>
+</html>
+
