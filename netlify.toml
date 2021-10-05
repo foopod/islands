@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/api"
-  to = "https://api.island.engineer"
+  to = "api.island.engineer"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
