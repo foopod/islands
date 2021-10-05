@@ -34,7 +34,12 @@
         button{
             display: block;
             margin: 1em auto;
-            /* margin:auto; */
+            padding:0.5em 1em;
+            color:white;
+            background-color: #007780;
+            border: 1px grey solid;
+            border-radius: 5px;
+            font-size: 120%;
         }  
         #island-select{
             display: flex;
@@ -43,10 +48,13 @@
         }
 
         #accounts-select{
-            width: 50%;
+            min-width: 50%;
             display: block;
             margin: 0.5em auto;
-            
+            padding:0.5em;
+            background-color: white;
+            border: 1px grey solid;
+            border-radius: 5px;
         }
         .inline-groups{
             width: 100%;
@@ -72,12 +80,13 @@
             margin-top: 10em;
             border-radius: 10px;
         }
+
     </style>
 </head>
 
 <body>
     <div id="container">
-        <h1>Explore your Island</h1>
+        <h1>Access your Island</h1>
         <img id="island-gif" src="/images/1-small/0001.gif" width="200px">
         <div id="signin-panel">
             <div id="island-select">
@@ -94,9 +103,8 @@
             </div>
             
             <label for="accounts-select">Wallet Address</label>
-            <select id="accounts-select">
-            </select>
-            <p class="sub">*The connected wallet that holds your Island</p>
+            <select id="accounts-select"></select>
+            <p class="sub" id="wallet-address">The connected wallet that holds your Island</p>
             <button id="signin">Sign</button>
             <p id="fail-auth" style="color:red; display:none">You don't own this Island</p>
         </div>
@@ -212,6 +220,14 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth()
+            if(document.getElementById("accounts-select").childNodes.length == 0){
+                let el = document.getElementById("wallet-address")
+                el.innerText = "Please connect a web3 compatible wallet - e.g. Metamask"
+                el.style.color = 'red'
+                document.getElementById("signin").style.backgroundColor = "grey"
+            }
+            let n = document.getElementById("number").value
+            document.getElementById("island-gif").src = `/images/1-small/${String(n).padStart(4, '0')}.gif`
         })
     
         function checkAuth(){
@@ -264,6 +280,10 @@
                         option.value = element;
                         option.innerHTML = element;
                         document.getElementById("accounts-select").appendChild(option);
+                        let el = document.getElementById("wallet-address")
+                        el.innerText = "The connected wallet that holds your Island"
+                        el.style.color = 'black'
+                        document.getElementById("signin").style.backgroundColor = "#007780"
                     });
                     return web3;
                 } catch (error) {
@@ -284,8 +304,6 @@
                 console.log('No web3 instance injected, using Local web3.');
                 return web3;
             }
-
-            
         });
     </script>
 </body>
