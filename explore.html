@@ -2,20 +2,251 @@
 
 <head>
     <title>Explore your Island</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet"> 
+    <style>
+        html{
+            font-family: 'Comfortaa';
+        }
+        h1{
+            text-align: center;
+        }
+        #container{
+            margin:auto;
+            max-width: 32em;
+            padding: 1em;
+        }
+        label{
+            display: block;
+            text-align: center;
+        }
+        #generation, input{
+            width: 100%;
+            display: block;
+            margin: 0.5em auto;
+            padding:0.5em;
+            background-color: white;
+            border: 1px grey solid;
+            border-radius: 5px;
+        }
+        button{
+            display: block;
+            margin: 1em auto;
+            /* margin:auto; */
+        }  
+        #island-select{
+            display: flex;
+            justify-content: center;
+            padding: 1em 4em;
+        }
+
+        #accounts-select{
+            width: 50%;
+            display: block;
+            margin: 0.5em auto;
+            
+        }
+        .inline-groups{
+            width: 100%;
+            padding: 0em 1em;
+        }
+
+        .sub{
+            text-align: center;
+            font-size: 70%;
+        }
+        #island-gif{
+            display: block;
+            margin: auto;
+            border-radius: 50%;
+        }
+        a{
+            text-decoration: none;
+            background-color:#007780;
+            color: white;
+            padding: 1em;
+            margin:  0.2em;
+            margin-top: 10em;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <button id="login">Log In</button>
+    <div id="container">
+        <h1>Explore your Island</h1>
+        <img id="island-gif" src="/images/1/0001.gif" width="200px">
+        <div id="signin-panel">
+            <div id="island-select">
+                <div class="inline-groups">
+                    <label for="generation">Generation</label>
+                    <select id="generation">
+                        <option>1</option>
+                    </select>
+                </div>
+                <div class="inline-groups">
+                    <label for="number">Island</label>
+                    <input id="number" type="number" min=1 max=50 value=1>
+                </div>
+            </div>
+            
+            <label for="accounts-select">Wallet Address</label>
+            <select id="accounts-select">
+            </select>
+            <p class="sub">*The connected wallet that holds your Island</p>
+            <button id="signin">Sign In</button>
+            <p id="fail-auth" style="color:red; display:none">You don't own this Island</p>
+        </div>
+        <div id="signout-panel" style="display: none;">
+            <button id="signout">Sign Out</button>
+        </div>
+
+        <div id="island-box" style="display:none">
+            <p>Downloads</p>
+            <br>
+            <a href="" id="vox-link" download="island.vox">.vox</a>
+            <a href="" id="gif-link" download="island.gif">.gif</a>
+            <a href="" id="json-link" download="island.json">.json</a>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
     <script type="module">
         let web3
+        let sig
+        let g, number, walletAddress
 
-        document.getElementById("login").addEventListener('click', () => {
-            web3.eth.sign("I own it! Let me in!", "0x1A86158e0F2778763F8d7daBcEF5194F478fc5b1", (sig) => {
-                console.log(sig)
-            })
+        let g1Tokens = ["11997040336426860554384840057772232603065102508292936107707547656246538534913",
+                        "11997040336426860554384840057772232603065102508292936107707547657346050162689",
+                        "11997040336426860554384840057772232603065102508292936107707547658445561790465",
+                        "11997040336426860554384840057772232603065102508292936107707547659545073418241",
+                        "11997040336426860554384840057772232603065102508292936107707547660644585046017",
+                        "11997040336426860554384840057772232603065102508292936107707547661744096673793",
+                        "11997040336426860554384840057772232603065102508292936107707547662843608301569",
+                        "11997040336426860554384840057772232603065102508292936107707547663943119929345",
+                        "11997040336426860554384840057772232603065102508292936107707547665042631557121",
+                        "11997040336426860554384840057772232603065102508292936107707547666142143184897",
+                        "11997040336426860554384840057772232603065102508292936107707547667241654812673",
+                        "11997040336426860554384840057772232603065102508292936107707547668341166440449",
+                        "11997040336426860554384840057772232603065102508292936107707547669440678068225",
+                        "11997040336426860554384840057772232603065102508292936107707547670540189696001",
+                        "11997040336426860554384840057772232603065102508292936107707547671639701323777",
+                        "11997040336426860554384840057772232603065102508292936107707547672739212951553",
+                        "11997040336426860554384840057772232603065102508292936107707547673838724579329",
+                        "11997040336426860554384840057772232603065102508292936107707547674938236207105",
+                        "11997040336426860554384840057772232603065102508292936107707547676037747834881",
+                        "11997040336426860554384840057772232603065102508292936107707547677137259462657",
+                        "11997040336426860554384840057772232603065102508292936107707547678236771090433",
+                        "11997040336426860554384840057772232603065102508292936107707547679336282718209",
+                        "11997040336426860554384840057772232603065102508292936107707547680435794345985",
+                        "11997040336426860554384840057772232603065102508292936107707547681535305973761",
+                        "11997040336426860554384840057772232603065102508292936107707547682634817601537",
+                        "11997040336426860554384840057772232603065102508292936107707547683734329229313",
+                        "11997040336426860554384840057772232603065102508292936107707547684833840857089",
+                        "11997040336426860554384840057772232603065102508292936107707547685933352484865",
+                        "11997040336426860554384840057772232603065102508292936107707547687032864112641",
+                        "11997040336426860554384840057772232603065102508292936107707547688132375740417",
+                        "11997040336426860554384840057772232603065102508292936107707547689231887368193",
+                        "11997040336426860554384840057772232603065102508292936107707547690331398995969",
+                        "11997040336426860554384840057772232603065102508292936107707547691430910623745",
+                        "11997040336426860554384840057772232603065102508292936107707547692530422251521",
+                        "11997040336426860554384840057772232603065102508292936107707547693629933879297",
+                        "11997040336426860554384840057772232603065102508292936107707547694729445507073",
+                        "11997040336426860554384840057772232603065102508292936107707547695828957134849",
+                        "11997040336426860554384840057772232603065102508292936107707547696928468762625",
+                        "11997040336426860554384840057772232603065102508292936107707547698027980390401",
+                        "11997040336426860554384840057772232603065102508292936107707547699127492018177",
+                        "11997040336426860554384840057772232603065102508292936107707547700227003645953",
+                        "11997040336426860554384840057772232603065102508292936107707547701326515273729",
+                        "11997040336426860554384840057772232603065102508292936107707547702426026901505",
+                        "11997040336426860554384840057772232603065102508292936107707547703525538529281",
+                        "11997040336426860554384840057772232603065102508292936107707547704625050157057",
+                        "11997040336426860554384840057772232603065102508292936107707547705724561784833",
+                        "11997040336426860554384840057772232603065102508292936107707547706824073412609",
+                        "11997040336426860554384840057772232603065102508292936107707547707923585040385",
+                        "11997040336426860554384840057772232603065102508292936107707547709023096668161",
+                        "11997040336426860554384840057772232603065102508292936107707547710122608295937"]
 
+        document.getElementById("signin").addEventListener('click', async () => {
+            g = document.getElementById("generation").value
+            number = document.getElementById("number").value
+            walletAddress = document.getElementById("accounts-select").value
+
+            sig = await web3.eth.personal.sign(`I own Island #${number}`, walletAddress)
+            let xhr = new XMLHttpRequest()
+            xhr.open("GET", `/auth?sig=${sig}&g=${g}&number=${number}&token=${g1Tokens[number-1]}`, false)
+            xhr.withCredentials = true;
+            xhr.onload = () => {
+                if(xhr.status == 200){
+                    localStorage.setItem("gen", g)
+                    localStorage.setItem("number", number)
+                    console.log(xhr.status)
+                    document.getElementById("fail-auth").style.display = "none"
+                    setupPage()
+                } else {
+                    document.getElementById("fail-auth").style.display = "block"
+                }
+            }
+            xhr.send("")
         })
+
+        document.getElementById("number").addEventListener('change', async () => {
+            let n = document.getElementById("number").value
+            document.getElementById("island-gif").src = `/images/1/${String(n).padStart(4, '0')}.gif`
+        })
+
+        document.getElementById("signout").addEventListener('click', async () => {
+            let xhr = new XMLHttpRequest()
+            xhr.open("GET", `/signout`, false)
+            xhr.withCredentials = true;
+            xhr.onload = () => {
+                localStorage.clear()
+                teardownPage()
+            }
+            xhr.send("")
+        })
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth()
+        })
+    
+        function checkAuth(){
+            if(localStorage.getItem("gen")){
+                let xhr = new XMLHttpRequest()
+                xhr.open("GET", `/auth`, false)
+                xhr.onload = (err) => {
+                    if(xhr.status == 200){
+                        g = localStorage.getItem("gen")
+                        number = localStorage.getItem("number")
+                        setupPage()
+                    }
+                }
+                xhr.send("")
+            }
+        }
+
+        function setupPage(){
+            document.getElementById("island-gif").src = `/images/1/${String(number).padStart(4, '0')}.gif`
+            document.getElementById("island-box").style.display = 'block'
+            document.getElementById("signin-panel").style.display = 'none'
+            document.getElementById("signout-panel").style.display = 'block'
+            document.getElementById("vox-link").href = `/island?gen=${g}&number=${number}&type=vox`
+            document.getElementById("gif-link").href = `/images/${g}/${String(number).padStart(4, '0')}.gif`
+            document.getElementById("json-link").href = `/island?gen=${g}&number=${number}&type=json`
+        }
+
+        function teardownPage(){
+            document.getElementById("signin-panel").style.display = 'block'
+            document.getElementById("signout-panel").style.display = 'none'
+            document.getElementById("island-box").style.display = 'none'
+            document.getElementById("vox-link").href = ""
+            document.getElementById("gif-link").href = ""
+            document.getElementById("json-link").href = ""
+        }
+
         window.addEventListener('load', async () => {
 
             // Wait for loading completion to avoid race conditions with web3 injection timing.
@@ -25,6 +256,14 @@
                     // Request account access if needed
                     await window.ethereum.enable();
                     // Acccounts now exposed
+                    let accounts =  await web3.eth.getAccounts()
+                    console.log(accounts)
+                    accounts.forEach(element => {
+                        let option = document.createElement('option');
+                        option.value = element;
+                        option.innerHTML = element;
+                        document.getElementById("accounts-select").appendChild(option);
+                    });
                     return web3;
                 } catch (error) {
                     console.error(error);
@@ -44,6 +283,8 @@
                 console.log('No web3 instance injected, using Local web3.');
                 return web3;
             }
+
+            
         });
     </script>
 </body>
