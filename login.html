@@ -211,7 +211,7 @@
             document.getElementById("loading").style.display = "block"
             document.getElementById("signin").style.display = "none"
             g = document.getElementById("generation").value
-            number = document.getElementById("number").value
+            number = Number.parseInt(document.getElementById("number").value)
             walletAddress = document.getElementById("accounts-select").value
 
             sig = await web3.eth.personal.sign(`I own Island #${number}`, walletAddress)
