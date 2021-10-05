@@ -81,6 +81,19 @@
             border-radius: 10px;
         }
 
+        #loading{
+            background-image: url("/images/loading.svg");
+            width: 200px;
+            height: 50px;
+            margin:auto;
+            display: block;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100px;
+            image-rendering: crisp-edges;
+            display: none;
+        }
+
     </style>
 </head>
 
@@ -106,6 +119,7 @@
             <select id="accounts-select"></select>
             <p class="sub" id="wallet-address">The connected wallet that holds your Island</p>
             <button id="signin">Sign</button>
+            <div id="loading"></div>
             <p id="fail-auth" style="color:red; display:none">You don't own this Island</p>
         </div>
         <div id="signout-panel" style="display: none;">
@@ -179,6 +193,8 @@
                         "11997040336426860554384840057772232603065102508292936107707547710122608295937"]
 
         document.getElementById("signin").addEventListener('click', async () => {
+            document.getElementById("loading").style.display = "block"
+            document.getElementById("signin").style.display = "none"
             g = document.getElementById("generation").value
             number = document.getElementById("number").value
             walletAddress = document.getElementById("accounts-select").value
@@ -188,12 +204,15 @@
             xhr.open("GET", `/api/auth?sig=${sig}&g=${g}&number=${number}&token=${g1Tokens[number-1]}`, false)
             xhr.withCredentials = true;
             xhr.onload = () => {
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("signin").style.display = "block"
                 if(xhr.status == 200){
                     localStorage.setItem("gen", g)
                     localStorage.setItem("number", number)
                     console.log(xhr.status)
                     document.getElementById("fail-auth").style.display = "none"
                     setupPage()
+                    
                 } else {
                     document.getElementById("fail-auth").style.display = "block"
                 }
@@ -262,6 +281,8 @@
             document.getElementById("vox-link").href = ""
             document.getElementById("gif-link").href = ""
             document.getElementById("json-link").href = ""
+            document.getElementById("loading").style.display = "none"
+            document.getElementById("signin").style.display = "block"
         }
 
         window.addEventListener('load', async () => {
