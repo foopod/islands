@@ -48,3 +48,55 @@ wine FileToVox.exe --i ~/src/island/gen1/0046/ --o ~/src/island/gen1/0046 --cs 6
 wine FileToVox.exe --i ~/src/island/gen1/0047/ --o ~/src/island/gen1/0047 --cs 64
 wine FileToVox.exe --i ~/src/island/gen1/0048/ --o ~/src/island/gen1/0048 --cs 64
 wine FileToVox.exe --i ~/src/island/gen1/0049/ --o ~/src/island/gen1/0049 --cs 64
+
+
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0001.gif 0001.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0002.gif 0002.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0003.gif 0003.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0004.gif 0004.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0005.gif 0005.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0006.gif 0006.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0007.gif 0007.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0008.gif 0008.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0009.gif 0009.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0010.gif 0010.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0011.gif 0011.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0012.gif 0012.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0013.gif 0013.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0014.gif 0014.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0015.gif 0015.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0016.gif 0016.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0017.gif 0017.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0018.gif 0018.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0019.gif 0019.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0020.gif 0020.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0021.gif 0021.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0022.gif 0022.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0023.gif 0023.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0024.gif 0024.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0025.gif 0025.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0026.gif 0026.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0027.gif 0027.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0028.gif 0028.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0029.gif 0029.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0030.gif 0030.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0031.gif 0031.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0032.gif 0032.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0033.gif 0033.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0034.gif 0034.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0035.gif 0035.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0036.gif 0036.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0037.gif 0037.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0038.gif 0038.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0039.gif 0039.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0040.gif 0040.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0041.gif 0041.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0042.gif 0042.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0043.gif 0043.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0044.gif 0044.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0045.gif 0045.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0046.gif 0046.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0047.gif 0047.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0048.gif 0048.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0049.gif 0049.gif
+gifsicle -O3 --resize 128x128 --colors 128 --lossy -o 0050.gif 0050.gif

@@ -61,6 +61,7 @@
             display: block;
             margin: auto;
             border-radius: 50%;
+            image-rendering: crisp-edges;
         }
         a{
             text-decoration: none;
@@ -77,7 +78,7 @@
 <body>
     <div id="container">
         <h1>Explore your Island</h1>
-        <img id="island-gif" src="/images/1/0001.gif" width="200px">
+        <img id="island-gif" src="/images/1-small/0001.gif" width="200px">
         <div id="signin-panel">
             <div id="island-select">
                 <div class="inline-groups">
@@ -96,11 +97,11 @@
             <select id="accounts-select">
             </select>
             <p class="sub">*The connected wallet that holds your Island</p>
-            <button id="signin">Sign In</button>
+            <button id="signin">Sign</button>
             <p id="fail-auth" style="color:red; display:none">You don't own this Island</p>
         </div>
         <div id="signout-panel" style="display: none;">
-            <button id="signout">Sign Out</button>
+            <button id="signout">Exit</button>
         </div>
 
         <div id="island-box" style="display:none">
@@ -194,7 +195,7 @@
 
         document.getElementById("number").addEventListener('change', async () => {
             let n = document.getElementById("number").value
-            document.getElementById("island-gif").src = `/images/1/${String(n).padStart(4, '0')}.gif`
+            document.getElementById("island-gif").src = `/images/1-small/${String(n).padStart(4, '0')}.gif`
         })
 
         document.getElementById("signout").addEventListener('click', async () => {
@@ -229,12 +230,12 @@
         }
 
         function setupPage(){
-            document.getElementById("island-gif").src = `/images/1/${String(number).padStart(4, '0')}.gif`
+            document.getElementById("island-gif").src = `/images/1-small/${String(number).padStart(4, '0')}.gif`
             document.getElementById("island-box").style.display = 'block'
             document.getElementById("signin-panel").style.display = 'none'
             document.getElementById("signout-panel").style.display = 'block'
             document.getElementById("vox-link").href = `/api/island?gen=${g}&number=${number}&type=vox`
-            document.getElementById("gif-link").href = `/images/${g}/${String(number).padStart(4, '0')}.gif`
+            document.getElementById("gif-link").href = `/images/${g}-small/${String(number).padStart(4, '0')}.gif`
             document.getElementById("json-link").href = `/api/island?gen=${g}&number=${number}&type=json`
         }
 
