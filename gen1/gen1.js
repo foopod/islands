@@ -296,7 +296,7 @@ function createIsland(name) {
         var destCtx = destCanvas.getContext('2d')
         destCtx.drawImage(canvas, 0,(highestPoint-i) * 64,64,64,0,0,64,64);
         const buffer = destCanvas.toBuffer('image/png')
-        fs.writeFileSync(dir + String(i).padStart(4, '0') + '.png', buffer)
+        fs.writeFileSync(dir + 4 + '.png', buffer)
     }
 
     // const buffer = canvas.toBuffer('image/png')

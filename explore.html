@@ -235,7 +235,7 @@
             document.getElementById("signin-panel").style.display = 'none'
             document.getElementById("signout-panel").style.display = 'block'
             document.getElementById("vox-link").href = `/api/island?gen=${g}&number=${number}&type=vox`
-            document.getElementById("gif-link").href = `/images/${g}-small/${String(number).padStart(4, '0')}.gif`
+            document.getElementById("gif-link").href = `/images/${g}/${String(number).padStart(4, '0')}.gif`
             document.getElementById("json-link").href = `/api/island?gen=${g}&number=${number}&type=json`
         }
 
