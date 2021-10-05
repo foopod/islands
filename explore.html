@@ -176,7 +176,7 @@
 
             sig = await web3.eth.personal.sign(`I own Island #${number}`, walletAddress)
             let xhr = new XMLHttpRequest()
-            xhr.open("GET", `/auth?sig=${sig}&g=${g}&number=${number}&token=${g1Tokens[number-1]}`, false)
+            xhr.open("GET", `/api/auth?sig=${sig}&g=${g}&number=${number}&token=${g1Tokens[number-1]}`, false)
             xhr.withCredentials = true;
             xhr.onload = () => {
                 if(xhr.status == 200){
@@ -199,7 +199,7 @@
 
         document.getElementById("signout").addEventListener('click', async () => {
             let xhr = new XMLHttpRequest()
-            xhr.open("GET", `/signout`, false)
+            xhr.open("GET", `/api/signout`, false)
             xhr.withCredentials = true;
             xhr.onload = () => {
                 localStorage.clear()
@@ -216,7 +216,7 @@
         function checkAuth(){
             if(localStorage.getItem("gen")){
                 let xhr = new XMLHttpRequest()
-                xhr.open("GET", `/auth`, false)
+                xhr.open("GET", `/api/auth`, false)
                 xhr.onload = (err) => {
                     if(xhr.status == 200){
                         g = localStorage.getItem("gen")
@@ -233,9 +233,9 @@
             document.getElementById("island-box").style.display = 'block'
             document.getElementById("signin-panel").style.display = 'none'
             document.getElementById("signout-panel").style.display = 'block'
-            document.getElementById("vox-link").href = `/island?gen=${g}&number=${number}&type=vox`
+            document.getElementById("vox-link").href = `/api/island?gen=${g}&number=${number}&type=vox`
             document.getElementById("gif-link").href = `/images/${g}/${String(number).padStart(4, '0')}.gif`
-            document.getElementById("json-link").href = `/island?gen=${g}&number=${number}&type=json`
+            document.getElementById("json-link").href = `/api/island?gen=${g}&number=${number}&type=json`
         }
 
         function teardownPage(){
