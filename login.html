@@ -143,6 +143,8 @@
         <div id="signout-panel" style="display: none;">
             <button id="signout" style="margin:4em auto;">Back</button>
         </div>
+
+        <p class="sub">Currently only supporting Gen1 Islands</p>
     </div>
 
     <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
@@ -224,7 +226,6 @@
                 if (xhr.status == 200) {
                     localStorage.setItem("gen", g)
                     localStorage.setItem("number", number)
-                    console.log(xhr.status)
                     document.getElementById("fail-auth").style.display = "none"
                     setupPage()
 
