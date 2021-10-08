@@ -62,7 +62,7 @@
         } else {
             divider = window.innerHeight/maxRez
         }
-        renderer.setSize(window.innerWidth/divider, window.innerHeight/divider, false);
+        renderer.setSize((window.innerWidth/divider)/window.devicePixelRatio, (window.innerHeight/divider)/window.devicePixelRatio, false);
 
         renderer.setClearColor()
 
