@@ -14,6 +14,21 @@
             height: 100%;
             image-rendering: crisp-edges;
         }
+
+        #controls {
+            position: absolute;
+            display: inline;
+        }
+
+        svg {
+            margin: 0.2em -2.5em 0.2em -1em;
+            width: 100px;
+            padding: 0.3em
+        }
+
+        svg:hover {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -39,12 +54,12 @@
         // var renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
         // renderer.setSize( window.innerWidth, window.innerHeight );
-        renderer.setSize(window.innerWidth / 5, window.innerHeight / 5, false);
+        renderer.setSize(window.innerWidth / 7, window.innerHeight / 7, false);
 
         renderer.setClearColor()
 
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 50000);
-        camera.position.set(0, 2000, 4000);
+        camera.position.set(0, 1000, 5000);
         camera.rotateX(-Math.PI * 0.15);
 
         var clock = new THREE.Clock();
@@ -52,14 +67,16 @@
 
         var scene = new THREE.Scene();
 
-        var ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.2);
+        var ambientLight = new THREE.AmbientLight(0xbbbbaa, 0.4);
         scene.add(ambientLight);
 
-        var light = new THREE.DirectionalLight(0xffffaa, 1);
+        var light = new THREE.DirectionalLight(0xffff22, 0.8);
         light.color.setHSL(1, 1, 1);
         light.rotateX(- Math.PI / 4);
-        light.position.set(2000, 4000, 0);
-        // light.position.multiplyScalar(1);
+        light.position.set(6000, 10000, 2000);
+        light.castShadow = true;
+        light.shadowDarkness = 0.5;
+
         scene.add(light);
 
         scene.background = new THREE.Color(0xffffff)
@@ -87,7 +104,8 @@
         // var geometry = new THREE.PlaneBufferGeometry(1000000, 1000000);
         // var mesh = new THREE.Mesh(geometry, material);
         // geometry.rotateX(- Math.PI / 2);
-        // geometry.translate(0, -3200, 0)
+        // geometry.translate(0, -3000, 0)
+        // mesh.receiveShadow = true
         // scene.add(mesh);
 
         const waterGeometry = new THREE.PlaneGeometry(1000000, 1000000);
@@ -102,7 +120,7 @@
                 }),
                 sunDirection: new THREE.Vector3(),
                 sunColor: 0xffffff,
-                waterColor: 0x001e0f,
+                waterColor: 0x004B48,
                 distortionScale: 3.7,
                 fog: scene.fog !== undefined
             }
@@ -111,106 +129,43 @@
         water.position.set(0, -3150, 0)
         water.rotation.x = - Math.PI / 2;
         scene.add(water);
-        
+
 
         const mtlLoader = new MTLLoader();
         const params = new URLSearchParams(window.location.search);
         const name = params.get("island");
 
         // local
-        // mtlLoader.load(`/test/0047.mtl`, (mtl) => {
-        //     mtl.preload();
-        //     const objLoader = new OBJLoader();
-        //     objLoader.setMaterials(mtl);
-        //     // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-        //     objLoader.load(`/test/0047.obj`, (root) => {
-        //         console.log(root)
-        //         root.children[0].scale.set(1000, 1000, 1000)
-        //         root.children[0].rotateX(Math.PI / 2);
-        //         scene.add(root);
-        //     });
-        // });
-
-        // prod
-        mtlLoader.load(`/api/data/1/${name}.mtl`, (mtl) => {
+        mtlLoader.load(`/test/0047.mtl`, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
             // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-            objLoader.load(`/api/data/1/${name}.obj`, (root) => {
-                console.log(root)
+            objLoader.load(`/test/0047.obj`, (root) => {
+                root.castShadow = true;
+                root.receiveShadow = true;
                 root.children[0].scale.set(1000, 1000, 1000)
                 root.children[0].rotateX(Math.PI / 2);
                 scene.add(root);
             });
         });
 
-
-        function draw() {
-            var vertices = geometry.attributes.position.array;
-            var colors = [];
-
-            for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-                vertices[j + 1] = data[i] * 10;
-                var c = new THREE.Color();
-                var height = vertices[j + 1] / 1000;
-                var hue = 0;
-                var sat = 1;
-                var light = 0.5;
-                //water
-                if (height < 0.01) {
-                    hue = 200 / 360;
-
-                    //sand
-                } else if (height < 0.03) {
-                    hue = 53 / 360;
-                    light = 0.5 * (1 - height * 10);
-
-                    //forest
-                } else if (height < 0.3) {
-                    hue = 116 / 360;
-                    light = 0.1 + (height * 0.8);
-
-                    //cliffs
-                }
-                else if (height < 0.4) {
-                    hue = 116 / 360;
-                    sat = 0.5 - (height * 2 - 0.4);
-                    light = 0.6 * (height * 2);
-
-                    //snow
-                } else {
-                    sat = 0;
-                    light = 1 * (height * 2);
-                }
-                c.setHSL(hue, sat, light)
-                colors.push(c.r, c.g, c.b);
-            }
-
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-            geometry.computeVertexNormals();
-
-        }
-        // draw();
-        // controls
-        // var controls = new OrbitControls( camera, renderer.domElement );
-        // // controls.minPolarAngle = Math.PI/0.5;
-        // controls.maxPolarAngle = Math.PI * 0.5;
-        // controls.minDistance = 3000;
-        // controls.maxDistance = 5000;
-
         const controls = new OrbitControls(camera, canvas);
         controls.target.set(0, -2500, 0);
-        // controls.maxPolarAngle = Math.PI / 2;
+        controls.maxPolarAngle = Math.PI / 2 - 0.1;
+        controls.enablePan = false
         controls.update();
 
+        //shadows
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapType = THREE.PCFSoftShadowMap;
+        water.receiveShadow = true;
 
 
 
         function animate() {
             requestAnimationFrame(animate);
             water.material.uniforms.time.value += 2.0 / 60.0;
-            // geometry.rotateY(- Math.PI / 2 * clock.getDelta() / 10);
             renderer.render(scene, camera);
         }
 
