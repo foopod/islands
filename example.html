@@ -13,21 +13,14 @@
             width: 100%;
             height: 100%;
             image-rendering: crisp-edges;
-        }
-
-        #controls {
-            position: absolute;
-            display: inline;
-        }
-
-        svg {
-            margin: 0.2em -2.5em 0.2em -1em;
-            width: 100px;
-            padding: 0.3em
-        }
-
-        svg:hover {
-            cursor: pointer;
+            image-rendering:optimizeSpeed;             /* Legal fallback */
+            image-rendering:-moz-crisp-edges;          /* Firefox        */
+            image-rendering:-o-crisp-edges;            /* Opera          */
+            image-rendering:-webkit-optimize-contrast; /* Safari         */
+            image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+            image-rendering:crisp-edges;               /* CSS4 Proposed  */
+            image-rendering:pixelated;                 /* CSS4 Proposed  */
+            -ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
         }
     </style>
 </head>
