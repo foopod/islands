@@ -133,11 +133,12 @@
         </div>
 
         <div id="island-box" style="display:none">
-            <p>Downloads</p>
+            <p>Your Island Data</p>
             <br>
             <a href="" id="vox-link" download="island.vox">.vox</a>
             <a href="" id="gif-link" download="island.gif">.gif</a>
             <a href="" id="json-link" download="island.json">.json</a>
+            <a href="" id="example-link">Explore (alpha)</a>
         </div>
 
         <div id="signout-panel" style="display: none;">
@@ -289,6 +290,7 @@
             document.getElementById("vox-link").href = `/api/island?gen=${g}&number=${number}&type=vox`
             document.getElementById("gif-link").href = `/images/${g}/${String(number).padStart(4, '0')}.gif`
             document.getElementById("json-link").href = `/api/island?gen=${g}&number=${number}&type=json`
+            document.getElementById("explore-link").href = `/explore?island=${String(number).padStart(4, '0')}`
         }
 
         function teardownPage() {
@@ -298,6 +300,7 @@
             document.getElementById("vox-link").href = ""
             document.getElementById("gif-link").href = ""
             document.getElementById("json-link").href = ""
+            document.getElementById("explore-link").href = ""
             document.getElementById("loading").style.display = "none"
             document.getElementById("signin").style.display = "block"
         }
