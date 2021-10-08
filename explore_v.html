@@ -20,15 +20,15 @@
 <body style="overflow: hidden;">
     <canvas id="c" />
     <!-- <script type="module" src="./three.module.js"></script> -->
-    <script type="module" src="./ImprovedNoise.js"></script>
+    <!-- <script type="module" src="./ImprovedNoise.js"></script> -->
     <script type="module">
-        import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
-        import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+        import * as THREE from './three.js/build/three.module.js';
+        import { OrbitControls } from './three.js/examples/jsm/controls/OrbitControls.js';
         import { ImprovedNoise } from './ImprovedNoise.js';
 
-        import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
-        import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
-
+        import VoxelLoader from './three-voxel-loader.js';
+        
+        let loader = new VoxelLoader();
 
         var worldWidth = 64
         var multiplier = 2
@@ -71,34 +71,55 @@
 
         //create land
         // var landMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
-        var landMaterial = new THREE.MeshLambertMaterial( {  wireframe: false, shading: THREE.FlatShading,vertexColors:  THREE.VertexColors } );
-        // landMaterial.color.setHex(0x007780);
-        var landGeometry = new THREE.PlaneBufferGeometry(6000, 6000, (worldWidth * multiplier) -1, (worldWidth * multiplier) - 1);
-        var land = new THREE.Mesh(landGeometry, landMaterial);
-        landGeometry.rotateX(- Math.PI / 2);
-        landGeometry.translate(0, 0, 0)
+        // var landMaterial = new THREE.MeshLambertMaterial( {  wireframe: false, shading: THREE.FlatShading,vertexColors:  THREE.VertexColors } );
+        // var landGeometry = new THREE.PlaneBufferGeometry(6000, 6000, (worldWidth * multiplier) -1, (worldWidth * multiplier) - 1);
+        // var land = new THREE.Mesh(landGeometry, landMaterial);
+        // landGeometry.rotateX(- Math.PI / 2);
+        // landGeometry.translate(0, 0, 0)
 
         var extraData = generateHeight(worldWidth * multiplier, worldWidth * multiplier)
 
         const controls = new OrbitControls(camera, canvas);
         controls.target.set(0, 500, 0);
-        controls.maxPolarAngle = Math.PI / 2;
+        // controls.maxPolarAngle = Math.PI / 2;
         controls.update();
 
         document.addEventListener('DOMContentLoaded', () => {
-            let xhr = new XMLHttpRequest()
-            xhr.open("GET", `/test/0047.json`, false)
-            xhr.onload = (err) => {
-                if (xhr.status == 200) {
-                    let islandData = JSON.parse(xhr.responseText);
-                    draw(islandData);
-                    scene.add(land);
-                }
-            }
-            xhr.send("")
+            // let xhr = new XMLHttpRequest()
+            // xhr.open("GET", `/test/0047.json`, false)
+            // xhr.onload = (err) => {
+            //     if (xhr.status == 200) {
+            //         let islandData = JSON.parse(xhr.responseText);
+            //         drawCubes(islandData);
+            //         // scene.add(land);
+            //     }
+            // }
+            // xhr.send("")
+            drawCubes(islandData);
         })
 
+        function drawCubes(islandData){
+            // Load a resource from provided URL.
+            loader.loadFile(
+                // Resource URL.
+                './test/0047.vox',
 
+                // Called when resource is loaded.
+                function ( voxels ) {
+                    scene.add( voxels );
+                },
+
+                // Called when loading is in progresses.
+                function ( xhr ) {
+                    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+                },
+
+                // Called when loading has errors.
+                function ( error ) {
+                    console.log( 'An error happened' );
+                }
+            );
+        }
 
         function draw(islandData) {
             var heightmap = islandData.heightmap

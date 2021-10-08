@@ -38,7 +38,7 @@
         // var renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
         // renderer.setSize( window.innerWidth, window.innerHeight );
-        renderer.setSize(window.innerWidth / 8, window.innerHeight / 8, false);
+        renderer.setSize(window.innerWidth / 5, window.innerHeight / 5, false);
 
         renderer.setClearColor()
 
@@ -51,16 +51,17 @@
 
         var scene = new THREE.Scene();
 
-        var ambientLight = new THREE.AmbientLight(0xaaaaaa);
+        var ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.2);
         scene.add(ambientLight);
 
-        var light = new THREE.DirectionalLight(0xffffff, 0.7);
+        var light = new THREE.DirectionalLight(0xffffaa, 1);
         light.color.setHSL(1, 1, 1);
+        light.rotateX(- Math.PI / 4);
         light.position.set(2000, 4000, 0);
-        light.position.multiplyScalar(1);
+        // light.position.multiplyScalar(1);
         scene.add(light);
 
-        scene.background = new THREE.Color(0xB7B6C2)
+        scene.background = new THREE.Color(0xB2F7EF)
         //create a blue LineBasicMaterial
         var material = new THREE.MeshBasicMaterial();
         material.color.setHex( 0x007780 );
@@ -73,12 +74,15 @@
 
         const mtlLoader = new MTLLoader();
 
-        mtlLoader.load('/test/0047.mtl', (mtl) => {
+        const params = new URLSearchParams(window.location.search);     
+        const name = params.get("island");
+
+        mtlLoader.load(`/data/1/${name}.mtl`, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
             // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-            objLoader.load('/test/0047.obj', (root) => {
+            objLoader.load(`/data/1/${name}.obj`, (root) => {
                 console.log(root)
                 root.children[0].scale.set(1000, 1000, 1000)
                 root.children[0].rotateX(Math.PI / 2);
