@@ -19,7 +19,7 @@
 
 <body style="overflow: hidden;">
     <canvas id="c" />
-    <script type="module" src="./three.module.js"></script>
+    <!-- <script type="module" src="./three.module.js"></script> -->
     <script type="module" src="./ImprovedNoise.js"></script>
     <script type="module">
         import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -28,6 +28,7 @@
 
         import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
         import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
+        import { Water } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/objects/Water.js';
 
         var worldWidth = 64, worldDepth = 64;
         var data = generateHeight(worldWidth, worldDepth);
@@ -61,22 +62,76 @@
         // light.position.multiplyScalar(1);
         scene.add(light);
 
-        scene.background = new THREE.Color(0xB2F7EF)
-        //create a blue LineBasicMaterial
-        var material = new THREE.MeshBasicMaterial();
-        material.color.setHex( 0x007780 );
+        scene.background = new THREE.Color(0xffffff)
 
-        var geometry = new THREE.PlaneBufferGeometry(1000000, 1000000);
-        var mesh = new THREE.Mesh(geometry, material);
-        geometry.rotateX(- Math.PI / 2);
-        geometry.translate(0,-3200,0)
-        scene.add(mesh);
+        //skybox
+        // const loader = new THREE.TextureLoader();
+        // const texture = loader.load(
+        //     'images/sky.png',
+        //     () => {
+        //         const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+        //         rt.fromEquirectangularTexture(renderer, texture);
+        //         scene.background = rt.texture;
+        //     });
+
+        // fog
+        const color = 0xFFFFFF;  // white
+        const near = 500;
+        const far = 20000;
+        scene.fog = new THREE.Fog(color, near, far);
+
+
+        // water
+        // var material = new THREE.MeshBasicMaterial();
+        // material.color.setHex(0x007780);
+        // var geometry = new THREE.PlaneBufferGeometry(1000000, 1000000);
+        // var mesh = new THREE.Mesh(geometry, material);
+        // geometry.rotateX(- Math.PI / 2);
+        // geometry.translate(0, -3200, 0)
+        // scene.add(mesh);
+
+        const waterGeometry = new THREE.PlaneGeometry(1000000, 1000000);
+
+        let water = new Water(
+            waterGeometry,
+            {
+                textureWidth: 512,
+                textureHeight: 512,
+                waterNormals: new THREE.TextureLoader().load('images/waternormals.jpg', function (texture) {
+                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                }),
+                sunDirection: new THREE.Vector3(),
+                sunColor: 0xffffff,
+                waterColor: 0x001e0f,
+                distortionScale: 3.7,
+                fog: scene.fog !== undefined
+            }
+        );
+
+        water.position.set(0, -3150, 0)
+        water.rotation.x = - Math.PI / 2;
+        scene.add(water);
+        
 
         const mtlLoader = new MTLLoader();
-
-        const params = new URLSearchParams(window.location.search);     
+        const params = new URLSearchParams(window.location.search);
         const name = params.get("island");
 
+        // local
+        // mtlLoader.load(`/test/0047.mtl`, (mtl) => {
+        //     mtl.preload();
+        //     const objLoader = new OBJLoader();
+        //     objLoader.setMaterials(mtl);
+        //     // objLoader.load("/test/0047.obj", obj => scene.add(obj));
+        //     objLoader.load(`/test/0047.obj`, (root) => {
+        //         console.log(root)
+        //         root.children[0].scale.set(1000, 1000, 1000)
+        //         root.children[0].rotateX(Math.PI / 2);
+        //         scene.add(root);
+        //     });
+        // });
+
+        // prod
         mtlLoader.load(`/api/data/1/${name}.mtl`, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader();
@@ -89,6 +144,7 @@
                 scene.add(root);
             });
         });
+
 
         function draw() {
             var vertices = geometry.attributes.position.array;
@@ -145,7 +201,7 @@
 
         const controls = new OrbitControls(camera, canvas);
         controls.target.set(0, -2500, 0);
-        controls.maxPolarAngle = Math.PI / 2;
+        // controls.maxPolarAngle = Math.PI / 2;
         controls.update();
 
 
@@ -153,6 +209,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            water.material.uniforms.time.value += 2.0 / 60.0;
             // geometry.rotateY(- Math.PI / 2 * clock.getDelta() / 10);
             renderer.render(scene, camera);
         }
