@@ -77,12 +77,12 @@
         const params = new URLSearchParams(window.location.search);     
         const name = params.get("island");
 
-        mtlLoader.load(`/data/1/${name}.mtl`, (mtl) => {
+        mtlLoader.load(`/api/data/1/${name}.mtl`, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
             // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-            objLoader.load(`/data/1/${name}.obj`, (root) => {
+            objLoader.load(`/api/data/1/${name}.obj`, (root) => {
                 console.log(root)
                 root.children[0].scale.set(1000, 1000, 1000)
                 root.children[0].rotateX(Math.PI / 2);
