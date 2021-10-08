@@ -53,8 +53,16 @@
 
         // var renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
-        // renderer.setSize( window.innerWidth, window.innerHeight );
-        renderer.setSize(window.innerWidth / 7, window.innerHeight / 7, false);
+        
+
+        var maxRez = 150
+        var div
+        if(window.innerWidth > window.innerHeight){
+            div = window.innerWidth/maxRez
+        } else {
+            div = window.innerHeight/maxRez
+        }
+        renderer.setSize(window.innerWidth / div, window.innerHeight / div, false);
 
         renderer.setClearColor()
 
