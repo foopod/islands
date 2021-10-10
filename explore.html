@@ -17,6 +17,7 @@
         canvas {
             width: 100%;
             height: 100%;
+            image-rendering: crisp-edges;
             image-rendering:optimizeSpeed;             /* Legal fallback */
             image-rendering:-moz-crisp-edges;          /* Firefox        */
             image-rendering:-o-crisp-edges;            /* Opera          */
@@ -31,7 +32,6 @@
 
 <body style="overflow: hidden;">
     <canvas id="c" />
-    <!-- <script type="module" src="./three.module.js"></script> -->
     <script type="module" src="./ImprovedNoise.js"></script>
     <script type="module">
         import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
@@ -42,16 +42,10 @@
         import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
         import { Water } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/objects/Water.js';
 
-        var worldWidth = 64, worldDepth = 64;
-        var data = generateHeight(worldWidth, worldDepth);
-
         var canvas = document.getElementById("c");
         var renderer = new THREE.WebGLRenderer({ canvas: canvas });
-
-        // var renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
-        // renderer.setSize( window.innerWidth, window.innerHeight );
-
+        
         var maxRez = 150
         var divider
         if(window.innerWidth > window.innerHeight){
@@ -60,16 +54,12 @@
             divider = window.innerHeight/maxRez
         }
         renderer.setSize((window.innerWidth/divider)/window.devicePixelRatio, (window.innerHeight/divider)/window.devicePixelRatio, false);
-        
-
-        renderer.setClearColor()
 
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 50000);
         camera.position.set(0, 1000, 5000);
         camera.rotateX(-Math.PI * 0.15);
 
         var clock = new THREE.Clock();
-
 
         var scene = new THREE.Scene();
 
@@ -82,12 +72,11 @@
         light.position.set(6000, 10000, 2000);
         light.castShadow = true;
         light.shadowDarkness = 0.5;
-
         scene.add(light);
 
-        scene.background = new THREE.Color(0xffffff)
+        scene.background = new THREE.Color(0xeeeeee)
 
-        //skybox
+        // skybox
         // const loader = new THREE.TextureLoader();
         // const texture = loader.load(
         //     'images/sky.png',
@@ -98,24 +87,14 @@
         //     });
 
         // fog
-        const color = 0xFFFFFF;  // white
+        const color = 0xeeeeee;  // white
         const near = 500;
         const far = 20000;
         scene.fog = new THREE.Fog(color, near, far);
 
 
         // water
-        // var material = new THREE.MeshBasicMaterial();
-        // material.color.setHex(0x007780);
-        // var geometry = new THREE.PlaneBufferGeometry(1000000, 1000000);
-        // var mesh = new THREE.Mesh(geometry, material);
-        // geometry.rotateX(- Math.PI / 2);
-        // geometry.translate(0, -3000, 0)
-        // mesh.receiveShadow = true
-        // scene.add(mesh);
-
         const waterGeometry = new THREE.PlaneGeometry(1000000, 1000000);
-
         let water = new Water(
             waterGeometry,
             {
@@ -131,32 +110,14 @@
                 fog: scene.fog !== undefined
             }
         );
-
         water.position.set(0, -3200, 0)
         water.rotation.x = - Math.PI / 2;
         scene.add(water);
-        
 
         const mtlLoader = new MTLLoader();
         const params = new URLSearchParams(window.location.search);
         const name = params.get("island");
 
-        // local
-        // mtlLoader.load(`/test/0047.mtl`, (mtl) => {
-        //     mtl.preload();
-        //     const objLoader = new OBJLoader();
-        //     objLoader.setMaterials(mtl);
-        //     // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-        //     objLoader.load(`/test/0047.obj`, (root) => {
-        //         root.castShadow = true;
-        //         root.receiveShadow = true;
-        //         root.children[0].scale.set(1000, 1000, 1000)
-        //         root.children[0].rotateX(Math.PI / 2);
-        //         scene.add(root);
-        //     });
-        // });
-
-        // prod
         mtlLoader.load(`/api/data/1/${name}.mtl`, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader();
@@ -172,7 +133,7 @@
 
         const controls = new OrbitControls(camera, canvas);
         controls.target.set(0, -2500, 0);
-        controls.maxPolarAngle = Math.PI / 2 - 0.1;
+        controls.maxPolarAngle = Math.PI / 2 - 0.01;
         controls.enablePan = false
         controls.update();
 
@@ -188,33 +149,6 @@
         }
 
         animate();
-
-        function generateHeight(width, height) {
-            var size = width * height, data = new Uint8Array(size),
-                perlin = new ImprovedNoise(), quality = 0.2, z = Math.random() * 1000;
-            for (var j = 0; j < 4; j++) {
-                for (var i = 0; i < size; i++) {
-                    var x = i % width, y = ~ ~(i / width);
-                    data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
-                    // data[i] = 100;
-                    if (j == 3) {
-                        // console.log(Math.sqrt(Math.pow(Math.abs(x -32),2) + Math.pow(Math.abs(y -32),2)));
-                        var distance = Math.sqrt(Math.pow(Math.abs(x - width * .5), 2) + Math.pow(Math.abs(y - width * .5), 2)) / width;
-                        var power = 10;
-                        // height = ((Math.cos(Math.PI * distance +1))/2)*power; 
-                        // console.log(distance);
-                        var height = 1 / (distance * 5 + 1);
-                        var height = height * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * distance), power);
-                        // console.log(height);
-                        data[i] = (data[i] * height) * 2;
-                    }
-                }
-                quality *= 5;
-
-            }
-            return data;
-        }
-
     </script>
 </body>
 
