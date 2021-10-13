@@ -276,6 +276,8 @@
 
                     if(vertices[j + 1] != 0){
                         vertices[j + 1]+= extraData[i]
+                    } else {
+                        vertices[j + 1] = -1000
                     }
 
                     // matching voxels
@@ -307,6 +309,8 @@
 
                     if(vertices[j + 1] != 0){
                         vertices[j + 1]+= extraData[i]
+                    } else {
+                        vertices[j + 1] = -1000
                     }
 
                     potentialVoxels = islandData.voxels.filter(function (e) {
