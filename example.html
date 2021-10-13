@@ -41,12 +41,21 @@
         import { OBJLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
         import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
         import { Water } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/objects/Water.js';
+        import {EffectComposer} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/EffectComposer.js';
+        import {RenderPass} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/RenderPass.js';
+        import {BloomPass} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/BloomPass.js';
+        import {FilmPass} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/postprocessing/FilmPass.js';
+
 
         var canvas = document.getElementById("c");
         var renderer = new THREE.WebGLRenderer({ canvas: canvas });
         renderer.setPixelRatio(window.devicePixelRatio);
+        // renderer.gammaFactor = 2.2;
+        // renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.shadowMapEnabled = true;
+        renderer.shadowMapSoft = true;
         
-        var maxRez = 150
+        var maxRez = 200
         var divider
         if(window.innerWidth > window.innerHeight){
             divider = window.innerWidth/maxRez
@@ -63,15 +72,23 @@
 
         var scene = new THREE.Scene();
 
-        var ambientLight = new THREE.AmbientLight(0xbbbbaa, 0.4);
+        var ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
         scene.add(ambientLight);
 
-        var light = new THREE.DirectionalLight(0xffff22, 0.8);
-        light.color.setHSL(1, 1, 1);
-        light.rotateX(- Math.PI / 4);
-        light.position.set(6000, 10000, 2000);
+        var light = new THREE.DirectionalLight(0xffffdd, 1);
+        // light.color.setHSL(1, 1, 1);
+        light.rotateY(Math.PI / 4);
+        light.position.set(10000, 6000, -10000);
         light.castShadow = true;
         light.shadowDarkness = 0.5;
+        
+        light.shadowCameraNear = 0;
+        light.shadowCameraFar = 50000;
+        
+        light.shadowCameraLeft = -5000;
+        light.shadowCameraRight = 5000;
+        light.shadowCameraTop = 5000;
+        light.shadowCameraBottom = -5000;
         scene.add(light);
 
         scene.background = new THREE.Color(0xeeeeee)
@@ -88,9 +105,18 @@
 
         // fog
         const color = 0xeeeeee;  // white
-        const near = 500;
+        const near = 0;
         const far = 20000;
         scene.fog = new THREE.Fog(color, near, far);
+
+        //cylinder
+        // var geometry = new THREE.CylinderGeometry(100, 0, 300, 50, 50, false);
+        // var material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+        // var cylinder = new THREE.Mesh( geometry, material );
+        // cylinder.position.set(1000,-1000,200);
+        // cylinder.rotation.x = -Math.PI / 2;
+        // cylinder.castShadow = true;
+        // scene.add( cylinder );
 
 
         // water
@@ -122,12 +148,15 @@
         // local
         mtlLoader.load(`/test/0047.mtl`, (mtl) => {
             mtl.preload();
+            console.log(mtl)
             const objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
             // objLoader.load("/test/0047.obj", obj => scene.add(obj));
             objLoader.load(`/test/0047.obj`, (root) => {
-                root.castShadow = true;
-                root.receiveShadow = true;
+                root.children[0].material.flatShading = false
+                root.children[0].geometry.computeVertexNormals()
+                root.children[0].castShadow = true;
+                root.children[0].receiveShadow = true;
                 root.children[0].scale.set(1000, 1000, 1000)
                 root.children[0].rotateX(Math.PI / 2);
                 scene.add(root);
@@ -145,10 +174,31 @@
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
         water.receiveShadow = true;
 
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+
+        const bloomPass = new BloomPass(
+            1,    // strength
+            25,   // kernel size
+            2,    // sigma ?
+            256,  // blur render target resolution
+        );
+        // composer.addPass(bloomPass);
+
+        const filmPass = new FilmPass(
+            0.04,   // noise intensity
+            0.02,  // scanline intensity
+            648,    // scanline count
+            false,  // grayscale
+        );
+        filmPass.renderToScreen = true;
+        composer.addPass(filmPass);
+
         function animate() {
             requestAnimationFrame(animate);
             water.material.uniforms.time.value += 2.0 / 60.0;
-            renderer.render(scene, camera);
+            // renderer.render(scene, camera);
+            composer.render()
         }
 
         animate();
