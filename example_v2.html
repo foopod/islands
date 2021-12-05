@@ -157,7 +157,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             let xhr = new XMLHttpRequest()
-            xhr.open("GET", `/test/0047.json`, false)
+            xhr.open("GET", `/test/0003.json`, false)
             xhr.onload = (err) => {
                 if (xhr.status == 200) {
                     let islandData = JSON.parse(xhr.responseText);
@@ -183,6 +183,13 @@
                     })
                     if(hut.length > 0){
                         drawHut(hut[0].x, hut[0].y, hut[0].z)
+                    }
+
+                    let kraken = islandData.objects.filter( (e) => {
+                        return e.object == 'kraken'
+                    })
+                    if(kraken.length > 0){
+                        drawKraken(kraken[0].x, kraken[0].y, kraken[0].z)
                     }
                 }
             }
@@ -237,10 +244,29 @@
                 objLoader.load(`/test/pier.obj`, (root) => {
                     root.children[0].castShadow = true;
                     root.children[0].receiveShadow = true;
-                    root.children[0].scale.set(30, 30, 30)
+                    root.children[0].scale.set(35, 35, 35)
                     
                     let mult = 35
                     root.children[0].position.set(x * mult, z * mult - 3200, y * mult - 900)
+                    root.children[0].rotateY(Math.PI / 2);
+                    scene.add(root);
+                });
+            });
+        }
+
+        function drawKraken(x, y, z){
+            mtlLoader.load(`/test/kraken.mtl`, (mtl) => {
+                mtl.preload();
+                console.log(mtl)
+                const objLoader = new OBJLoader();
+                objLoader.setMaterials(mtl);
+                objLoader.load(`/test/kraken.obj`, (root) => {
+                    root.children[0].castShadow = true;
+                    root.children[0].receiveShadow = true;
+                    root.children[0].scale.set(50, 50, 50)
+                    
+                    let mult = 60
+                    root.children[0].position.set(x * mult , z * mult - 3200, y * mult)
                     root.children[0].rotateY(Math.PI / 2);
                     scene.add(root);
                 });
