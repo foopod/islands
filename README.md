@@ -11,9 +11,9 @@ In this repo you will find the following...
 + [/example.html](https://github.com/foopod/islands/tree/main/example.html) - Voxel based rendering
 + [/example_v2.html](https://github.com/foopod/islands/tree/main/example_v2.html) - Upscaled Polygon rendering
 
-You can also explore the islands here...
+You can also explore the islands here... (sadly these no longer work on github pages - they won't host files like .mtl etc.)
 
-+ [voxel example](https://foopod.github.io/islands/example.html)
++ [voxel example](https://foopod.github.io/islands/example.html) 
 + [polygon example](https://foopod.github.io/islands/example.html)
 
 /explore.html no longer works as it required a service to validate ownership of an Island, the service also responded with the data needed for rendering. Although you should be able to use the above examples with your own Island data should you want to render your own Island.
