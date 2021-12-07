@@ -126,7 +126,7 @@
             {
                 textureWidth: 512,
                 textureHeight: 512,
-                waterNormals: new THREE.TextureLoader().load('images/waternormals.jpg', function (texture) {
+                waterNormals: new THREE.TextureLoader().load('islands/images/waternormals.jpg', function (texture) {
                     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                 }),
                 sunDirection: new THREE.Vector3(),
@@ -146,13 +146,13 @@
         const name = params.get("island");
 
         // local
-        mtlLoader.load(`/test/0047.mtl`, (mtl) => {
+        mtlLoader.load(`/islands/test/0047.mtl`, (mtl) => {
             mtl.preload();
             console.log(mtl)
             const objLoader = new OBJLoader();
             objLoader.setMaterials(mtl);
             // objLoader.load("/test/0047.obj", obj => scene.add(obj));
-            objLoader.load(`/test/0047.obj`, (root) => {
+            objLoader.load(`/islands/test/0047.obj`, (root) => {
                 root.children[0].material.flatShading = false
                 root.children[0].geometry.computeVertexNormals()
                 root.children[0].castShadow = true;
