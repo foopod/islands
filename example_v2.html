@@ -157,7 +157,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             let xhr = new XMLHttpRequest()
-            xhr.open("GET", `/test/0003.json`, false)
+            xhr.open("GET", `/islands/test/0003.json`, false)
             xhr.onload = (err) => {
                 if (xhr.status == 200) {
                     let islandData = JSON.parse(xhr.responseText);
@@ -198,12 +198,12 @@
 
 
         function drawLighthouse(x, y, z){
-            mtlLoader.load(`/test/lighthouse.mtl`, (mtl) => {
+            mtlLoader.load(`/islands/test/lighthouse.mtl`, (mtl) => {
                 mtl.preload();
                 console.log(mtl)
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(mtl);
-                objLoader.load(`/test/lighthouse.obj`, (root) => {
+                objLoader.load(`/islands/test/lighthouse.obj`, (root) => {
                     root.children[0].castShadow = true;
                     root.children[0].receiveShadow = true;
                     root.children[0].scale.set(30, 30, 30)
@@ -217,12 +217,12 @@
         }
 
         function drawHut(x, y, z){
-            mtlLoader.load(`/test/hut.mtl`, (mtl) => {
+            mtlLoader.load(`/islands/test/hut.mtl`, (mtl) => {
                 mtl.preload();
                 console.log(mtl)
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(mtl);
-                objLoader.load(`/test/hut.obj`, (root) => {
+                objLoader.load(`/islands/test/hut.obj`, (root) => {
                     root.children[0].castShadow = true;
                     root.children[0].receiveShadow = true;
                     root.children[0].scale.set(30, 30, 30)
@@ -236,12 +236,12 @@
         }
 
         function drawPier(x, y, z){
-            mtlLoader.load(`/test/pier.mtl`, (mtl) => {
+            mtlLoader.load(`/islands/test/pier.mtl`, (mtl) => {
                 mtl.preload();
                 console.log(mtl)
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(mtl);
-                objLoader.load(`/test/pier.obj`, (root) => {
+                objLoader.load(`/islands/test/pier.obj`, (root) => {
                     root.children[0].castShadow = true;
                     root.children[0].receiveShadow = true;
                     root.children[0].scale.set(35, 35, 35)
@@ -255,12 +255,12 @@
         }
 
         function drawKraken(x, y, z){
-            mtlLoader.load(`/test/kraken.mtl`, (mtl) => {
+            mtlLoader.load(`/islands/test/kraken.mtl`, (mtl) => {
                 mtl.preload();
                 console.log(mtl)
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(mtl);
-                objLoader.load(`/test/kraken.obj`, (root) => {
+                objLoader.load(`/islands/test/kraken.obj`, (root) => {
                     root.children[0].castShadow = true;
                     root.children[0].receiveShadow = true;
                     root.children[0].scale.set(50, 50, 50)
