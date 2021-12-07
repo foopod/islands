@@ -11,7 +11,7 @@ In this repo you will find the following...
 + [/example.html](https://github.com/foopod/islands/tree/main/example.html) - Voxel based rendering
 + [/example_v2.html](https://github.com/foopod/islands/tree/main/example_v2.html) - Upscaled Polygon rendering
 
-You can also explore the islands here... (sadly these no longer work on github pages - they won't host files like .mtl etc.)
+You can also explore the islands here... 
 
 + [voxel example](https://foopod.github.io/islands/example.html) 
 + [polygon example](https://foopod.github.io/islands/example.html)
